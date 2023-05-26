@@ -68,23 +68,40 @@ async function run() {
       res.send(result);
     });
 
-    app.delete('/toys/:id', async (req, res) => {
+    app.patch('/toys/:id', async (req, res) => {
       const id = req.params.id;
-      const query = { _id: new ObjectId(id) }
-      const result = await toysCollection.deleteOne(query);
-      res.send(result);
+      const filter = { _id: new ObjectId(id) }
+      const updatedToy = req.body;
+
+      const updated = {
+        $set: {
+          quantity: updatedToy.quantity,
+          price: updatedToy.price,
+          description: updatedToy.description
+        },
+    };
+    const result = await toysCollection.updateOne(filter, updated)
+    res.send(result)
     })
 
 
+  app.delete('/toys/:id', async (req, res) => {
+    const id = req.params.id;
+    const query = { _id: new ObjectId(id) }
+    const result = await toysCollection.deleteOne(query);
+    res.send(result);
+  })
 
 
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    // await client.close();
-  }
+
+
+  // Send a ping to confirm a successful connection
+  await client.db("admin").command({ ping: 1 });
+  console.log("Pinged your deployment. You successfully connected to MongoDB!");
+} finally {
+  // Ensures that the client will close when you finish/error
+  // await client.close();
+}
 }
 run().catch(console.dir);
 

@@ -43,6 +43,7 @@ async function run() {
       const result = await toysCollection.find(query).toArray();
       res.send(result)
     })
+    
 
     app.get('/toys', async (req, res) => {
       const cursor = toysCollection.find();
@@ -58,9 +59,12 @@ async function run() {
       const option = {
         projection: { photo: 1, name: 1, seller: 1, email: 1, price: 1, rating: 1, quantity: 1, description: 1, }
       }
+
       const result = await toysCollection.findOne(query, option);
       res.send(result);
     });
+
+
 
     app.post('/toys', async (req, res) => {
       const toys = req.body;

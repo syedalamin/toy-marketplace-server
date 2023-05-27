@@ -42,19 +42,7 @@ async function run() {
       };
       const result = await toysCollection.find(query).toArray();
       res.send(result)
-    });
-
-    app.get('/toys/:text', async(req, res)=>{
-      if(req.params.text == "marvel" || req.params.text == "avengers" || req.params.text == "starwars" ){
-        const result = await toysCollection.find({category: req.params.text}).toArray();
-        return res.send(result);
-
-      }
-      const result = await toysCollection.find({}).toArray();
-      res.send(result)
-
     })
-
 
     app.get('/toys', async (req, res) => {
       const cursor = toysCollection.find();
